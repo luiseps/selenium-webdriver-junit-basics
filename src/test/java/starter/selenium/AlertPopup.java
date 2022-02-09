@@ -6,10 +6,14 @@ import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
 
 public class AlertPopup {
     WebDriver driver;
@@ -20,6 +24,15 @@ public class AlertPopup {
         driver = new ChromeDriver();
     }
 
+    @Test
+    public void testLinksBlankSpaces() {
+        driver.get("http://demo.guru99.com/test/delete_customer.php");
+        List<WebElement> links =  driver.findElements(By.tagName("a"));
+        links.forEach( link -> {
+            String linkText = link.getText();
+            assertEquals(linkText.trim(), linkText);
+        });
+    }
 
     @Test
     public void testAlertPopup(){

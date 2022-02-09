@@ -19,7 +19,7 @@ public class BrowserDesiredCapabilities {
                 INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
 
 
-        System.setProperty("webdriver.ie.driver", "C:\\IEDriverServer.exe");
+        System.setProperty("webdriver.chrome.driver","./src/test/resources/webdriver/mac/chromedriver");
 
         //it is used to initialize the IE driver
         WebDriver driver = new InternetExplorerDriver(capabilities);
