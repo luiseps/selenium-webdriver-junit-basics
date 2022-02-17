@@ -33,15 +33,31 @@ public class AlertPopup {
     }
 
     @Test
-    public void maxNumber() throws NoSuchFieldException {
+    public void maxNumber() {
         String numbers = "1 -1 100 500 -1 -2";
         List<String> numberList = Arrays.asList(numbers.split(" "));
-        Integer max = numberList
+        OptionalInt max = numberList
                 .stream()
                 .mapToInt(v -> Integer.parseInt(v))
-                .max()
-                .orElseThrow(NoSuchFieldException::new);
-        System.out.println(max);
+                .max();
+        System.out.println(max.getAsInt());
+    }
+
+    @Test
+    public void searchOnTable(){
+        driver.get("http://demo.guru99.com/test/table.html");
+        WebElement myTable = driver.findElement(By.xpath("/html/body/table/tbody"));
+        List < WebElement > rows_table = myTable.findElements(By.tagName("tr"));
+        int rows_count = rows_table.size();
+
+        for (int row = 0; row < rows_count; row++) {
+            List < WebElement > Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+            int columns_count = Columns_row.size();
+            for (int column = 0; column < columns_count; column++) {
+                String celText = Columns_row.get(column).getText();
+                System.out.println("Cell Value of row number " + row + " and column number " + column + " Is " + celText);
+            }
+        }
     }
 
     @Test
@@ -49,19 +65,11 @@ public class AlertPopup {
 
         driver.get("http://demo.guru99.com/test/delete_customer.php");
 
-
         driver.findElement(By.name("cusid")).sendKeys("53920");
         driver.findElement(By.name("submit")).submit();
-
-        // Switching to Alert
         Alert alert = driver.switchTo().alert();
-
-        // Capturing alert message.
         String alertMessage= driver.switchTo().alert().getText();
-
-        // Displaying alert message
         System.out.println(alertMessage);
-        // Accepting alert
         alert.accept();
     }
 
@@ -73,8 +81,6 @@ public class AlertPopup {
         driver.findElement(By.xpath("//*[contains(@href,'popup.php')]")).click();
 
         String MainWindow=driver.getWindowHandle();
-
-        // To handle all new opened window.
         Set<String> s1=driver.getWindowHandles();
         Iterator<String> i1=s1.iterator();
 
@@ -84,19 +90,13 @@ public class AlertPopup {
 
             if(!MainWindow.equalsIgnoreCase(ChildWindow))
             {
-
-                // Switching to Child window
                 driver.switchTo().window(ChildWindow);
                 driver.findElement(By.name("emailid"))
                         .sendKeys("gaurav.3n@gmail.com");
-
                 driver.findElement(By.name("btnLogin")).click();
-
-                // Closing the Child Window.
                 driver.close();
             }
         }
-        // Switching to Parent window i.e Main Window.
         driver.switchTo().window(MainWindow);
     }
     @After
