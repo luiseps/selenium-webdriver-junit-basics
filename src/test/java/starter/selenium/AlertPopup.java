@@ -9,9 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,6 +30,18 @@ public class AlertPopup {
             String linkText = link.getText();
             assertEquals(linkText.trim(), linkText);
         });
+    }
+
+    @Test
+    public void maxNumber() throws NoSuchFieldException {
+        String numbers = "1 -1 100 500 -1 -2";
+        List<String> numberList = Arrays.asList(numbers.split(" "));
+        Integer max = numberList
+                .stream()
+                .mapToInt(v -> Integer.parseInt(v))
+                .max()
+                .orElseThrow(NoSuchFieldException::new);
+        System.out.println(max);
     }
 
     @Test
