@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,6 +42,40 @@ public class AlertPopup {
                 .mapToInt(v -> Integer.parseInt(v))
                 .max();
         System.out.println(max.getAsInt());
+    }
+
+    @Test
+    public void getOccurrences(){
+        String randomWord = "the world random word the they we";
+        List<String> words = Arrays.asList(randomWord.split(" "));
+        List<String> processed = new ArrayList<>();
+        words.forEach( w -> {
+            int count = 0;
+            for(int i= 0; i<words.size(); i++){
+                if(w.equals(words.get(i)) && !processed.contains(w)){
+                    count++;
+                }
+            }
+            if(!processed.contains(w)){
+                System.out.println(count + " : " + w);
+            }
+            processed.add(w);
+
+        });
+    }
+
+    @Test
+    public void getOccurrencesJava8(){
+        String randomWord = "the world random word the they we";
+        List<String> words = Arrays.asList(randomWord.split(" "));
+        List<String> processed = new ArrayList<>();
+
+        words.forEach( w -> {
+            if(!processed.contains(w)){
+                System.out.println(w + ": " + words.stream().filter( e -> e.equals(w) ).collect(Collectors.toList()).size());
+            }
+            processed.add(w);
+        });
     }
 
     @Test
