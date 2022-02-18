@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +40,7 @@ public class AlertPopup {
         List<String> numberList = Arrays.asList(numbers.split(" "));
         OptionalInt max = numberList
                 .stream()
-                .mapToInt(v -> Integer.parseInt(v))
+                .mapToInt(Integer::parseInt)
                 .max();
         System.out.println(max.getAsInt());
     }
@@ -66,16 +67,20 @@ public class AlertPopup {
 
     @Test
     public void getOccurrencesJava8(){
-        String randomWord = "the world random word the they we";
+        String randomWord = "the world random word the they we we we the";
         List<String> words = Arrays.asList(randomWord.split(" "));
-        List<String> processed = new ArrayList<>();
+        //first method
+        Map<String, Long> frequencyMap = words.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        words.forEach( w -> {
-            if(!processed.contains(w)){
-                System.out.println(w + ": " + words.stream().filter( e -> e.equals(w) ).collect(Collectors.toList()).size());
-            }
-            processed.add(w);
-        });
+        frequencyMap.forEach((key, value) -> System.out.println(key + ":" + value));
+        frequencyMap.forEach((k,v) -> System.out.println(k + " : " + v));
+        //second method
+        Map <String, Integer > wordCounter = words.stream()
+                .collect(Collectors.toMap(String::toLowerCase, w -> 1, Integer::sum));
+
+        wordCounter.forEach((key, value) -> System.out.println(key + ":" + value));
     }
 
     @Test
